@@ -14,10 +14,10 @@ transactions.get("/", (req, res) => {
 // GET INDIVIDUAL TRANSACTION
 // ADD ERROR HANDLING
 // PATH PARAM MUST MATCH!!!
-transactions.get("/:id", (req, res) => {
-  const { id } = req.params;
-  if (transactionsArr[id]) {
-    res.json(transactionsArr[id]);
+transactions.get("/:index", (req, res) => {
+  const { index } = req.params;
+  if (transactionsArr[index]) {
+    res.json(transactionsArr[index]);
   } else {
     res.status(404).json({ error: "Transaction not found." });
   }
@@ -31,33 +31,34 @@ transactions.post("/", (req, res) => {
 });
 
 // DELETE
-transactions.delete("/:id", (req, res) => {
-  const { id } = req.params;
-  if (transactionsArr[id]) {
-    res.json(transactionsArr.splice(id, 1));
+transactions.delete("/:index", (req, res) => {
+  const { index } = req.params;
+  if (transactionsArr[index]) {
+    res.json(transactionsArr.splice(index, 1));
   } else {
     res.status(404).json({ error: "Transaction not found." });
   }
 });
 
 // UPDATE
-transactions.put("/:id", (req, res) => {
-  const { id } = req.params;
+transactions.put("/:index", (req, res) => {
+  const { index } = req.params;
 
-  if (!transactionsArr[id]) {
+  if (!transactionsArr[index]) {
     res.status(422).json({ error: "Not found." });
     return;
   }
 
-  let { date, name, amount, from } = req.body
-  if(date && name && from !== undefined && amount) {
-      transactionsArr[id] = {
+  let { date, name, amount, from, category } = req.body
+  if(date && name && from !== undefined && amount && category) {
+      transactionsArr[index] = {
           date,
           name,
           amount,
           from,
+          category
       }
-      res.json(transactionsArr[id])
+      res.json(transactionsArr[index])
   } else {
       res.status(422).json({ error: "Please provide all fields!"})
   }
